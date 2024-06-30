@@ -3,37 +3,32 @@ package com.gcstudios.entities;
 import java.awt.image.BufferedImage;
 
 import com.gcstudios.main.Game;
-import com.gcstudios.world.World;
 
 
 public class Player extends Entity{
 	
 	public boolean isPressed = false;
 	int lostTime = 0;
+	public double grav = 0.1;
 	
 	public Player(int x, int y, int width, int height,double speed,BufferedImage sprite) {
 		super(x, y, width, height, speed, sprite);
 	}
 	
 	public void tick(){
+		speed += grav;
+		if(!isPressed){
+			y+=speed;
 	
-		if(Game.lost == false){
-			if(!isPressed){
-				y+=speed;
-	
-			}else{
-				y-=speed;
-			}
 		}else{
-			lostTime++;
-			if(lostTime >= 60){
-				World.restartGame();
-			}
+			isPressed = false;
+			speed = 0;
+			y-=20 ;
 		}
 		
 
-		if(this.getY() > Game.HEIGHT){
-			World.restartGame();
+		if(this.getY()+16 > Game.HEIGHT){
+			Game.lost = true;
 		}
 		
 

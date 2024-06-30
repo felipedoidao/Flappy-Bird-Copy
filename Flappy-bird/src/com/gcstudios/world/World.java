@@ -1,12 +1,14 @@
 package com.gcstudios.world;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+//import java.awt.image.BufferedImage;
+//import java.io.IOException;
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 
 import com.gcstudios.entities.Player;
+import com.gcstudios.graficos.Spritesheet;
+import com.gcstudios.graficos.UI;
 import com.gcstudios.main.Game;
 
 public class World {
@@ -16,7 +18,7 @@ public class World {
 	public static final int TILE_SIZE = 16;
 	
 	
-	public World(String path){
+	/*public World(String path){
 		try {
 			BufferedImage map = ImageIO.read(getClass().getResource(path));
 			int[] pixels = new int[map.getWidth() * map.getHeight()];
@@ -54,13 +56,17 @@ public class World {
 				(tiles[x2 + (y2*World.WIDTH)] instanceof WallTile) ||
 				(tiles[x3 + (y3*World.WIDTH)] instanceof WallTile) ||
 				(tiles[x4 + (y4*World.WIDTH)] instanceof WallTile));
-	}
+	}*/
 	
 	public static void restartGame(){
+		Game.entities.clear();
 		Game.lost = false;
 		Game.score = 0;
-		Game.player = new Player(Game.WIDTH/2 - 35, Game.HEIGHT/2,16,16,2, Game.spritesheet.getSprite(0,0,16,16));
-		Game.entities.clear();
+		Game.spritesheet = new Spritesheet("/spritesheet.png");
+		Game.player = new Player(Game.WIDTH/2 - 35, Game.HEIGHT/2, 16, 16, 2, Game.spritesheet.getSprite(0,0,16,16));
+		Game.pipeGenerator = new PipeGenerator();
+		Game.ui = new UI();
+		
 		Game.entities.add(Game.player);
 		return;
 	}

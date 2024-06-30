@@ -14,20 +14,17 @@ public class Pipe extends Entity{
     }
 
     public void tick(){
-        if(Game.lost == false){
-            x-= speed;
+        x-= speed;
 
-            if(x+width == Game.player.getX()){
-                Game.score += 0.5;
+        if(x+width == Game.player.getX()){
+            Game.score += 0.5;
 
-            }
-            if(x+width < 0 ){
-             Game.entities.remove(this);
-                return;
-
-            }
         }
-        
+        if(x+width < 0 ){
+            Game.entities.remove(this);
+            return;
+
+        } 
     }
 
     public void render(Graphics g){

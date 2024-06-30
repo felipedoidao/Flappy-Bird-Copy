@@ -29,7 +29,6 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static final int SCALE = 3;
 	
 	private BufferedImage image;
-	
 
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
@@ -37,10 +36,11 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 
 	public static PipeGenerator pipeGenerator;
 	
-	public UI ui;
+	public static UI ui;
 	
 	public static double score = 0;
 	public static boolean lost = false;
+	public static int lostTime = 0;
 	
 	public Game(){
 		addKeyListener(this);
@@ -92,14 +92,19 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	}
 	
 	public void tick(){
-		
-		pipeGenerator.tick();
-		for(int i = 0; i < entities.size(); i++) {
-			Entity e = entities.get(i);
-			e.tick();
+		if(lost == false){
+			pipeGenerator.tick();
+			for(int i = 0; i < entities.size(); i++) {
+				Entity e = entities.get(i);
+				e.tick();
+			}
+		}else {
+			lostTime++;
+			if(lostTime >= 60){
+				lostTime = 0;
+				World.restartGame();
+			}
 		}
-
-		
 		
 	}
 	
@@ -173,9 +178,9 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	@Override
 	public void keyReleased(KeyEvent e) {
 
-		if(e.getKeyCode() == KeyEvent.VK_SPACE){
-			player.isPressed = false;
-		}
+		//if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			//player.isPressed = false;
+		//}
 
 	}
 
