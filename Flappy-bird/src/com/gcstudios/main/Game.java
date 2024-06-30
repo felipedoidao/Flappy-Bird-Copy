@@ -11,16 +11,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import javax.swing.JFrame;
 
-
-import com.gcstudios.entities.Entity;
-import com.gcstudios.entities.Player;
-import com.gcstudios.graficos.Spritesheet;
-import com.gcstudios.graficos.UI;
+import com.gcstudios.entities.*;
+import com.gcstudios.graficos.*;
+import com.gcstudios.world.*;
 
 public class Game extends Canvas implements Runnable,KeyListener,MouseListener,MouseMotionListener{
 
@@ -28,8 +24,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	public static final int WIDTH = 160;
-	public static final int HEIGHT = 120;
+	public static final int WIDTH = 90;
+	public static final int HEIGHT = 160;
 	public static final int SCALE = 3;
 	
 	private BufferedImage image;
@@ -38,10 +34,13 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
 	public static Player player;
+
+	public static PipeGenerator pipeGenerator;
 	
 	public UI ui;
 	
-	public static int score = 0;
+	public static double score = 0;
+	public static boolean lost = false;
 	
 	public Game(){
 		addKeyListener(this);
@@ -54,7 +53,8 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		//Inicializando objetos.
 		spritesheet = new Spritesheet("/spritesheet.png");
 		entities = new ArrayList<Entity>();
-		player = new Player(WIDTH/2 - 30,HEIGHT/2,16,16,2,spritesheet.getSprite(0,0,16,16));
+		player = new Player(WIDTH/2 - 35,HEIGHT/2,16,16,2,spritesheet.getSprite(0,0,16,16));
+		pipeGenerator = new PipeGenerator();
 		ui = new UI();
 		
 		entities.add(player);
@@ -93,6 +93,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 	
 	public void tick(){
 		
+		pipeGenerator.tick();
 		for(int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.tick();
@@ -115,7 +116,7 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 		g.setColor(new Color(122,102,255));
 		g.fillRect(0, 0,WIDTH,HEIGHT);
 		
-		/*Renderização do jogo*/
+		/*Renderizaï¿½ï¿½o do jogo*/
 		//Graphics2D g2 = (Graphics2D) g;
 		Collections.sort(entities,Entity.nodeSorter);
 		for(int i = 0; i < entities.size(); i++) {
@@ -162,19 +163,25 @@ public class Game extends Canvas implements Runnable,KeyListener,MouseListener,M
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			player.isPressed = true;
+		}
 	
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		
-		
+
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			player.isPressed = false;
+		}
+
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 

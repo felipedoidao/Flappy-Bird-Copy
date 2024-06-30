@@ -72,6 +72,10 @@ public class Entity {
 	public void setY(int newY) {
 		this.y = newY;
 	}
+
+	public void setSpd(int newSpd) {
+		this.speed = newSpd;
+	}
 	
 	public int getX() {
 		return (int)this.x;
